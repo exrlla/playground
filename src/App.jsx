@@ -1,61 +1,40 @@
-/* eslint-disable react/prop-types */
-import { createContext, useContext, useState, useEffect } from 'react';
-import Column from './Column';
-import './styles.css';
+import { useState } from 'react';
+import HomePage from './components/Home';
+import AboutPage from './components/About';
+import ContactPage from './components/Contact';
 
-export const BoardContext = createContext();
+const App = () => {
+  const [route, setRoute] = useState('home');
 
-const TaskBoardProvider = function() {
-  const [tasks, setTasks] = useState([
-    { id: 1, title: 'Task 1', status: 'todo' },
-    { id: 2, title: 'Task 2', status: 'todo' },
-    { id: 3, title: 'Task 3', status: 'todo' },
-  ]);
-
-  const moveTask = (taskId, newStatus) => {
-    const updatedTasks = tasks.map(task => {
-      if (task.id === taskId) {
-        return { ...task, status: newStatus };
-      }
-      return task;
-    });
-    setTasks(updatedTasks);
+  const renderPage = function() {
+    switch (route) {
+      case 'home':
+        return <HomePage />;
+      case 'about':
+        return <AboutPage />;
+      case 'contact':
+        return <ContactPage />;
+      default:
+        return <HomePage />;
+    }
   };
 
-  useEffect(() => {
-    // Change color of tasks in "Done" column using CSS
-    const doneTasks = document.querySelectorAll('.task[data-status="done"]');
-    doneTasks.forEach(taskElement => {
-      taskElement.style.backgroundColor = "#dbf3c9";
-    });
-  }, [tasks]);
-
   return (
-    <BoardContext.Provider value={{ tasks, moveTask }}>
-      <Board />
-    </BoardContext.Provider>
-  );
-};
-
-const Board = () => {
-  const { tasks } = useContext(BoardContext);
-
-  return (
-    <div className="board">
-      <Column title="To Do 🪄" tasks={tasks.filter(task => task.status === 'todo')} />
-      <Column title="In Progress 🚀" tasks={tasks.filter(task => task.status === 'inProgress')} />
-      <Column title="Done 🌟" tasks={tasks.filter(task => task.status === 'done')} />
+    <div>
+      <header>
+        <nav>
+          <ul>
+            <a href="#home"><li onClick={() => setRoute('home')}>Home</li></a>
+            <a href="#about"><li onClick={() => setRoute('about')}>About</li></a>
+            <a href="#contact"><li onClick={() => setRoute('contact')}>Contact</li></a>
+          </ul>
+        </nav>
+      </header>
+      <main>
+        {renderPage()}
+      </main>
     </div>
   );
 };
 
-
-
-export default function App() {
-  return (
-    <div className="App">
-      <TaskBoardProvider />
-    </div>
-  );
-}
-
+export default App;
