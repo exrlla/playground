@@ -1,40 +1,28 @@
-import { useState } from 'react';
-import HomePage from './components/Home';
-import AboutPage from './components/About';
-import ContactPage from './components/Contact';
+import { Routes , Route } from "react-router-dom";
 
-const App = () => {
-  const [route, setRoute] = useState('home');
+import Home from "./components/Home";
+import NavBar from "./components/NavBar";
+import Owala from "./components/Owala.jsx";
+import Stanley from "./components/Stanley.jsx";
+import Yeti from "./components/Yeti.jsx";
+import Hydroflask from "./components/Hydroflask.jsx";
+import Nalgene from "./components/Nalgene.jsx";
 
-  const renderPage = function() {
-    switch (route) {
-      case 'home':
-        return <HomePage />;
-      case 'about':
-        return <AboutPage />;
-      case 'contact':
-        return <ContactPage />;
-      default:
-        return <HomePage />;
-    }
-  };
+import './styles.css'
 
+
+export default function App() {
   return (
-    <div>
-      <header>
-        <nav>
-          <ul>
-            <a href="#home"><li onClick={() => setRoute('home')}>Home</li></a>
-            <a href="#about"><li onClick={() => setRoute('about')}>About</li></a>
-            <a href="#contact"><li onClick={() => setRoute('contact')}>Contact</li></a>
-          </ul>
-        </nav>
-      </header>
-      <main>
-        {renderPage()}
-      </main>
-    </div>
+    <div> 
+      <NavBar />
+    <Routes> 
+      <Route path="/" exact element={<Home />} /> 
+      <Route path="/owala" exact element={<Owala />} /> 
+      <Route path="/stanley" exact element={<Stanley />} />
+      <Route path="/yeti" exact element={<Yeti />} />
+      <Route path="/hydroflask" exact element={<Hydroflask />} />
+      <Route path="/nalgene" exact element={<Nalgene />} />
+    </Routes> 
+    </div> 
   );
-};
-
-export default App;
+}
